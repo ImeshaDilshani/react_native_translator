@@ -1,20 +1,42 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StatusBar,
+  StyleSheet,
+  View,
+  Text,
+  Switch,
+  useColorScheme,
+} from 'react-native';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const systemScheme = useColorScheme();
+  const [isDarkMode, setIsDarkMode] = useState(systemScheme === 'dark');
+
+  const toggleSwitch = () => setIsDarkMode(previousState => !previousState);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDarkMode ? '#222' : '#fff' },
+      ]}
+    >
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
+      <Text style={[styles.text, { color: isDarkMode ? '#fff' : '#000' }]}>
+        Hello World
+      </Text>
+
+      <View style={styles.switchRow}>
+        <Text style={{ color: isDarkMode ? '#fff' : '#000', marginRight: 10 }}>
+          {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+        </Text>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
+          onValueChange={toggleSwitch}
+          value={isDarkMode}
+        />
+      </View>
     </View>
   );
 }
@@ -22,6 +44,17 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 40,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
